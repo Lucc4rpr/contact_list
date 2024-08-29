@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import { Provider } from 'react-redux'
+import { store } from './app/store'
+import ContactForm from './components/ContactForm'
+import ContactList from './components/ContactList'
+import { Contact } from './features/contacts/contactsSlice'
 
-function App() {
+const App: React.FC = () => {
+  const [editingContact, setEditingContact] = useState<Contact | null>(null)
+
+  const clearEditingContact = () => {
+    setEditingContact(null)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Provider store={store}>
+      <div>
+        <h1>Contact List</h1>
+        <ContactForm
+          editingContact={editingContact || undefined}
+          clearEditingContact={clearEditingContact}
+        />
+        <ContactList setEditingContact={setEditingContact} />
+      </div>
+    </Provider>
+  )
 }
 
-export default App;
+export default App
